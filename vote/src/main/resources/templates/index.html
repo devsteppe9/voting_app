@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <title th:text="${option_a} + ' vs ' + ${option_b} + '!'">Voting App</title>
+    <base href="/index.html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="docker-compose, docker, stack">
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <div id="content-container">
+        <div id="content-container-center">
+            <h3 th:text="${option_a} + ' vs ' + ${option_b} + '!'"></h3>
+            <form id="choice" name="form" method="POST" action="/">
+                <button id="a" type="submit" name="vote" class="a" value="a" th:text="${option_a}">A</button>
+                <button id="b" type="submit" name="vote" class="b" value="b" th:text="${option_b}">B</button>
+            </form>
+            <div id="tip">
+                (Tip: you can change your vote)
+            </div>
+            <div id="hostname">
+                Processed by container ID <span th:text="${hostname}">hostname</span>
+            </div>
+        </div>
+    </div>
+    <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+    <div th:if="${vote}">
+        <script th:inline="javascript">
+            var vote = [[${ vote }]];
+            if (vote === "a") {
+                $(".a").prop('disabled', true);
+                $(".a").html('[[${option_a}]] <i class="fa fa-check-circle"></i>');
+                $(".b").css('opacity', '0.5');
+            }
+            if (vote === "b") {
+                $(".b").prop('disabled', true);
+                $(".b").html('[[${option_b}]] <i class="fa fa-check-circle"></i>');
+                $(".a").css('opacity', '0.5');
+            }
+        </script>
+    </div>
+</body>
+
+</html>
