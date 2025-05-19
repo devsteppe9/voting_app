@@ -6,7 +6,8 @@ services:
   vote:
     build: 
       context: ./vote
-      # target: dev
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
     depends_on:
     - kafka
         # condition: service_healthy
@@ -40,16 +41,19 @@ services:
   #     - front-tier
   #     - back-tier
 
-  # worker:
-  #   build:
-  #     context: ./worker
-  #   depends_on:
-  #     redis:
-  #       condition: service_healthy 
-  #     db:
-  #       condition: service_healthy 
-  #   networks:
-  #     - back-tier
+  worker:
+    build:
+      context: ./worker
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+    depends_on:
+    - kafka
+      # kafka:
+      #   condition: service_healthy 
+    # - db:
+    #     condition: service_healthy 
+    networks:
+      - back-tier
   kafka:
     image: apache/kafka:latest
     volumes:
@@ -79,7 +83,7 @@ services:
       - back-tier
 
   # db:
-  #   image: postgres:15-alpine
+  #   image: postgres:17-alpine
   #   environment:
   #     POSTGRES_USER: "postgres"
   #     POSTGRES_PASSWORD: "postgres"
