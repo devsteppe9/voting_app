@@ -65,6 +65,8 @@ public class VoteController {
         String topic = "voter";
         Vote msg = new Vote(voterCookie.getValue(), vote);
         template.send(topic, msg);
+        System.out.printf("Sent vote to topic '%s': voterId=%s, vote=%s%n", topic, voterCookie.getValue(), vote);
+
         attr.addFlashAttribute("vote", vote);
         return "redirect:/";
     }
