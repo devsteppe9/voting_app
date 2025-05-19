@@ -82,7 +82,7 @@ services:
       - back-tier
 
   vote-db:
-    image: postgres:latest
+    image: postgres:17-alpine
     restart: always
     environment:
       POSTGRES_USER: postgres
