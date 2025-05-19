@@ -25,21 +25,24 @@ services:
       - front-tier
       - back-tier
 
-  # result:
-  #   build: ./result
-  #   # use nodemon rather than node for local dev
-  #   entrypoint: nodemon --inspect=0.0.0.0 server.js
-  #   depends_on:
-  #     db:
-  #       condition: service_healthy 
-  #   volumes:
-  #     - ./result:/usr/local/app
-  #   ports:
-  #     - "8081:80"
-  #     - "127.0.0.1:9229:9229"
-  #   networks:
-  #     - front-tier
-  #     - back-tier
+  result:
+    build: ./result
+    environment:
+      VOTE_DB_URL: "postgres://postgres:postgres@vote-db/cs544"
+    # use nodemon rather than node for local dev
+    entrypoint: nodemon --inspect=0.0.0.0 server.js
+    depends_on:
+      - vote-db
+      # vote-db:
+      #   condition: service_healthy 
+    volumes:
+      - ./result:/usr/local/app
+    ports:
+      - "8081:80"
+      - "127.0.0.1:9229:9229"
+    networks:
+      - front-tier
+      - back-tier
 
   worker:
     build:
@@ -96,8 +99,8 @@ services:
       interval: "5s"
     networks:
       - back-tier
-    # ports:
-    #   - 5432:5432
+    ports:
+      - 5432:5432
 
   vote-db-adminer:
     image: adminer
