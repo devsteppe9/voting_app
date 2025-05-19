@@ -46,14 +46,13 @@ services:
       context: ./worker
     environment:
       KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      VOTE_DB_URL: "jdbc:postgresql://vote-db:5432/cs544"
     depends_on:
     - kafka
-      # kafka:
-      #   condition: service_healthy 
-    # - db:
-    #     condition: service_healthy 
+    - vote-db
     networks:
       - back-tier
+
   kafka:
     image: apache/kafka:latest
     volumes:
@@ -82,19 +81,31 @@ services:
     networks:
       - back-tier
 
-  # db:
-  #   image: postgres:17-alpine
-  #   environment:
-  #     POSTGRES_USER: "postgres"
-  #     POSTGRES_PASSWORD: "postgres"
-  #   volumes:
-  #     - "db-data:/var/lib/postgresql/data"
-  #     - "./healthchecks:/healthchecks"
-  #   healthcheck:
-  #     test: /healthchecks/postgres.sh
-  #     interval: "5s"
-  #   networks:
-  #     - back-tier
+  vote-db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: cs544
+    volumes:
+      # - "db-data:/var/lib/postgresql/data"
+      - "./healthchecks:/healthchecks"
+    healthcheck:
+      test: /healthchecks/postgres.sh
+      interval: "5s"
+    networks:
+      - back-tier
+    # ports:
+    #   - 5432:5432
+
+  vote-db-adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8082:8080
+    networks:
+      - back-tier
 
   # this service runs once to seed the database with votes
   # it won't run unless you specify the "seed" profile

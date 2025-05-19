@@ -1,5 +1,6 @@
 package com.cs544.worker;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -11,12 +12,15 @@ import com.cs544.Vote;
 @KafkaListener(topics = "voter")
 public class VoteListener {
 
+    @Autowired
+    private VoteService voteService;
+
     @KafkaHandler
     public void save(@Payload Vote vote) {
         System.out.println("Received Vote: " + vote.toString());
 
         try {
-            // TODO: Perisist to DB
+            voteService.add(vote);
             System.out.println("Vote persisted into db");
         } catch (Exception e) {
             System.err.println("Exception while persisting vote: ");
