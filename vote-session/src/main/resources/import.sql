@@ -1,0 +1,1 @@
+insert into session (optiona, optionb, title) values ('Cat', 'Dog', 'Dogs vs Cats');

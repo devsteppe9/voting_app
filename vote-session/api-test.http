@@ -1,0 +1,26 @@
+### Get all sessions
+GET http://localhost:8080/sessions
+Accept: application/json
+
+###
+
+### Get a session by ID
+GET http://localhost:8080/sessions/1
+Accept: application/json
+
+###
+
+### Create a new session
+POST http://localhost:8080/sessions
+Content-Type: application/json
+
+{
+    "title": "Jack vs Jill",
+    "optionA": "Jack",
+    "optionB": "Jill"
+}
+
+###
+
+### Delete a session by ID
+DELETE http://localhost:8080/sessions/1

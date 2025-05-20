@@ -5,13 +5,14 @@ import lombok.Data;
 @Data
 public class Vote {
     private String voterId;
-    private String vote;
+    private String option;
+    private Long sessionId;
 
     public Vote() {
     }
 
-    public Vote(String voterId, String vote) {
+    public Vote(String voterId, String option) {
         this.voterId = voterId;
-        this.vote = vote;
+        this.option = option;
     }
 }
