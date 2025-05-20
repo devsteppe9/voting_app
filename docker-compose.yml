@@ -39,6 +39,26 @@ services:
       - front-tier
       - back-tier
 
+  vote-session:
+    build:
+      context: ./vote-session
+    environment:
+      VOTE_DB_URL: "jdbc:postgresql://vote-db:5432/cs544"
+    depends_on:
+      vote-db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    ports:
+      - 8082:8080
+    networks:
+      - front-tier
+      - back-tier
+
   worker:
     build:
       context: ./worker
@@ -49,6 +69,8 @@ services:
       kafka:
         condition: service_healthy
       vote-db:
+        condition: service_healthy
+      vote-session:
         condition: service_healthy
     networks:
       - back-tier
