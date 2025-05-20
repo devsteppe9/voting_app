@@ -17,11 +17,11 @@ public class VoteListener {
 
     @KafkaHandler
     public void save(@Payload Vote vote) {
-        System.out.println("Received Vote: " + vote.toString());
+        // System.out.println("Received Vote: " + vote.toString());
 
         try {
             voteService.add(vote);
-            System.out.println("Vote persisted into db");
+            // System.out.println("Vote persisted into db");
         } catch (Exception e) {
             System.err.println("Exception while persisting vote: ");
             System.err.println(e.toString());

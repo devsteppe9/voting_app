@@ -51,7 +51,7 @@ function getVotes(client) {
       io.sockets.emit("scores", JSON.stringify(votes));
     }
 
-    setTimeout(function () { getVotes(client) }, 300);
+    setTimeout(function () { getVotes(client) }, 500);
   });
 }
 

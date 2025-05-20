@@ -1,7 +1,3 @@
-# version is now using "compose spec"
-# v2 and v3 are now combined!
-# docker-compose v1.27+ required
-
 services:
   vote:
     build: 
@@ -9,8 +5,8 @@ services:
     environment:
       KAFKA_BOOTSTRAP_SERVERS: kafka:9092
     depends_on:
-    - kafka
-        # condition: service_healthy
+      kafka:
+        condition: service_healthy
     healthcheck: 
       test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
       interval: 15s
@@ -32,9 +28,8 @@ services:
     # use nodemon rather than node for local dev
     entrypoint: nodemon --inspect=0.0.0.0 server.js
     depends_on:
-      - vote-db
-      # vote-db:
-      #   condition: service_healthy 
+      vote-db:
+        condition: service_healthy 
     volumes:
       - ./result:/usr/local/app
     ports:
@@ -51,8 +46,10 @@ services:
       KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       VOTE_DB_URL: "jdbc:postgresql://vote-db:5432/cs544"
     depends_on:
-    - kafka
-    - vote-db
+      kafka:
+        condition: service_healthy
+      vote-db:
+        condition: service_healthy
     networks:
       - back-tier
 
@@ -60,12 +57,12 @@ services:
     image: apache/kafka:latest
     volumes:
       - "./healthchecks:/healthchecks"
-    # healthcheck:
-    #   test: ["CMD", "kafka-topics.sh", "--bootstrap-server=localhost:9092", "--list"]
-    #   interval: 10s
-    #   timeout: 5s
-    #   retries: 3
-    #   start_period: 15s
+    healthcheck:
+      test: [ "CMD", "bash", "-c", 'nc -z localhost 9092' ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
     environment:
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,,CONTROLLER://0.0.0.0:9093
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
@@ -91,40 +88,23 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: cs544
-    volumes:
-      # - "db-data:/var/lib/postgresql/data"
-      - "./healthchecks:/healthchecks"
     healthcheck:
-      test: /healthchecks/postgres.sh
-      interval: "5s"
+      test: [ "CMD", "pg_isready", "-U", "postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - back-tier
     ports:
       - 5432:5432
 
-  vote-db-adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8082:8080
-    networks:
-      - back-tier
-
-  # this service runs once to seed the database with votes
-  # it won't run unless you specify the "seed" profile
-  # docker compose --profile seed up -d
-  seed:
-    build: ./seed-data
-    profiles: ["seed"]
-    depends_on:
-      vote:
-        condition: service_healthy 
-    networks:
-      - front-tier
-    restart: "no"
-
-volumes:
-  db-data:
+  # vote-db-adminer:
+  #   image: adminer
+  #   restart: always
+  #   ports:
+  #     - 8082:8080
+  #   networks:
+  #     - back-tier
 
 networks:
   front-tier:
