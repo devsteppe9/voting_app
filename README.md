@@ -4,7 +4,7 @@ A simple distributed voting application orchestrated with Docker containers.
 
 This project is inspired by [Spring's docker samples](https://github.com/dockersamples/example-voting-app) and enhanced with Spring Boot and Kafka integration. The application enables users to vote between two options and demonstrates a microservices architecture with the following components:
 
-- A front-end web app for submitting votes
+- A front-end web app for submitting votes and lets you create multiple voting sessions
 - A Kafka message broker for handling vote events
 - A worker service to process and persist votes
 - A REST API for managing voting sessions
@@ -30,7 +30,7 @@ The `vote` app will be running at [http://localhost:8080](http://localhost:8080)
 
 ![Architecture diagram](architecture.excalidraw.png)
 
-* A front-end web app in [Spring Boot/Thymeleaf](/vote) which lets you vote between two options
+* A front-end web app in [Spring Boot/Thymeleaf](/vote) which lets you vote between two options and create multiple voting sessions
 * A [Kafka](https://hub.docker.com/_/redis/) which collects new votes
 * A [Spring Boot](/worker/) worker which consumes votes and persists them in a Postgres database.
 * A [Spring Boot](/vote-session) REST API which lets you create a new voting session and show active voting sessions
@@ -40,7 +40,3 @@ The `vote` app will be running at [http://localhost:8080](http://localhost:8080)
 ## Notes
 
 The voting application only accepts one vote per client browser. It does not register additional votes if a vote has already been submitted from a client.
-
-This isn't an example of a properly architected perfectly designed distributed app... it's just a simple
-example of the various types of pieces and languages you might see (queues, persistent data, etc), and how to
-deal with them in Docker at a basic level.
