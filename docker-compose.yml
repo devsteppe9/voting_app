@@ -4,8 +4,11 @@ services:
       context: ./vote
     environment:
       KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      SESSION_API_URL: http://vote-session:8080/sessions
     depends_on:
       kafka:
+        condition: service_healthy
+      vote-session:
         condition: service_healthy
     healthcheck: 
       test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
@@ -77,8 +80,6 @@ services:
 
   kafka:
     image: apache/kafka:latest
-    volumes:
-      - "./healthchecks:/healthchecks"
     healthcheck:
       test: [ "CMD", "bash", "-c", 'nc -z localhost 9092' ]
       interval: 10s
@@ -120,13 +121,13 @@ services:
     ports:
       - 5432:5432
 
-  # vote-db-adminer:
-  #   image: adminer
-  #   restart: always
-  #   ports:
-  #     - 8082:8080
-  #   networks:
-  #     - back-tier
+  vote-db-adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8083:8080
+    networks:
+      - back-tier
 
 networks:
   front-tier:
