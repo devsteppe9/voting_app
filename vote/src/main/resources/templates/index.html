@@ -14,8 +14,9 @@
 <body>
     <div id="content-container">
         <div id="content-container-center">
-            <h3 th:text="${option_a} + ' vs ' + ${option_b} + '!'"></h3>
-            <form id="choice" name="form" method="POST" action="/">
+            <h3 th:text="${title}"></h3>
+            <form id="choice" name="form" method="POST" action="/votes">
+                <input type="hidden" name="sessionId" th:value="${sessionId}" />
                 <button id="a" type="submit" name="vote" class="a" value="a" th:text="${option_a}">A</button>
                 <button id="b" type="submit" name="vote" class="b" value="b" th:text="${option_b}">B</button>
             </form>
