@@ -17,7 +17,7 @@ public class VoteListener {
 
     @KafkaHandler
     public void save(@Payload Vote vote) {
-        // System.out.println("Received Vote: " + vote.toString());
+        System.out.println("Received Vote: " + vote.toString());
 
         try {
             voteService.add(vote);

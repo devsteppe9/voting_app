@@ -83,8 +83,16 @@ public class VoteController {
             @RequestParam(value = "sessionId") Long sessionId,
             RedirectAttributes attr) {
         Cookie voterCookie = WebUtils.getCookie(req, "voter_id");
-        if (voterCookie == null)
+        // TODO: remove this later, only for simulation
+        String voterId;
+        if (voterCookie == null) {
+            voterId = HexFormat.of().formatHex(random.generateSeed(8));
+            voterCookie = new Cookie("voter_id", voterId);
+            voterCookie.setPath("/");
+            res.addCookie(voterCookie);
             return "redirect:/";
+
+        }
 
         String topic = "voter";
         Session s = new Session();

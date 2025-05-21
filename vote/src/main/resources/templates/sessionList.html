@@ -23,7 +23,9 @@
         <tbody>
             <tr th:each="ses : ${voteSessions}">
                 <td th:text="${ses.id}"></td>
-                <td th:text="${ses.title}"></td>
+                <td>
+                    <a th:href="@{/votes/{id}(id=${ses.id})}" th:text="${ses.title}"></a>
+                </td>
                 <td th:text="${ses.optionA}"></td>
                 <td th:text="${ses.optionB}"></td>
                 <td>
