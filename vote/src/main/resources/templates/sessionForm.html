@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${msg}">Add Session</title>
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <h2 th:text="${msg}"></h2>
+    <form th:action="@{/sessions}" th:object="${session}" method="post">
+        <div>
+            <label>Title: <input type="text" th:field="*{title}" /></label>
+            <ul>
+                <li th:each="err : ${#fields.errors('title')}" th:text="${err}" class="error" />
+            </ul>
+        </div>
+        <div>
+            <label>Option A: <input type="text" th:field="*{optionA}" /></label><br />
+            <ul>
+                <li th:each="err : ${#fields.errors('optionA')}" th:text="${err}" class="error" />
+            </ul>
+        </div>
+        <div>
+            <label>Option B: <input type="text" th:field="*{optionB}" /></label><br />
+            <ul>
+                <li th:each="err : ${#fields.errors('optionB')}" th:text="${err}" class="error" />
+            </ul>
+        </div>
+        <button type="submit">Save</button>
+        <a th:href="@{/sessions}">Cancel</a>
+    </form>
+</body>
+
+</html>
