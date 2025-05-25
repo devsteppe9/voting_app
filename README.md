@@ -2,7 +2,7 @@
 
 A simple distributed voting application orchestrated with Docker containers.
 
-This project is inspired by [Spring's docker samples](https://github.com/dockersamples/example-voting-app) and enhanced with Spring Boot and Kafka integration. The application enables users to vote between two options and demonstrates a microservices architecture.
+This project is inspired by [Docker samples](https://github.com/dockersamples/example-voting-app) and enhanced with Spring Boot and Kafka integration. The application enables users to vote between two options and demonstrates a microservices architecture.
 
 ## Demo
 ![demonstration](https://github.com/devsteppe9/voting_app/blob/main/demo.gif)
