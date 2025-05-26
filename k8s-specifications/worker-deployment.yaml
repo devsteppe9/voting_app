@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: worker
+  template:
+    metadata:
+      labels:
+        app: worker
+    spec:
+      containers:
+      - name: worker
+        image: dedaced/voting_app-result-worker:latest
+        env:
+          - name: KAFKA_BOOTSTRAP_SERVERS
+            value: kafka:9092
+          - name: VOTE_DB_URL
+            value: jdbc:postgresql://vote-db:5432/cs544
