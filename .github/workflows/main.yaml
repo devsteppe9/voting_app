@@ -26,6 +26,8 @@ jobs:
             result
             .github/workflows
             docker-compose.yml
+            k8s-specifications/result-deployment.yaml
+
 
       # Better to login first and fail early if credentials are wrong
       - name: Log in to DockerHub
