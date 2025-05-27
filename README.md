@@ -19,7 +19,25 @@ Run in this directory to build and run the app:
 docker compose up
 ```
 
-The `vote` app will be running at [http://localhost:8080](http://localhost:8080), and the `results` will be at [http://localhost:8081](http://localhost:8081).
+The `vote` app will be running at [http://localhost:8080](http://localhost:8080), and the `results` will be at [http://localhost:8081/results/{session_id}](http://localhost:8081/results/1). Replace `{session_id}` in the URL with the ID of the voting session you want to see results for (e.g., `http://localhost:8081/results/1` for session ID 1).
+
+## Run the app in Kubernetes
+
+The folder k8s-specifications contains the YAML specifications of the Voting App's services.
+
+Run the following command to create the deployments and services. Note it will create these resources in your current namespace (`default` if you haven't changed it.)
+
+```shell
+kubectl create -f k8s-specifications/
+```
+
+The `vote` web app is then available on port 31000 on each host of the cluster, the `result` web app is available on port 31001.
+
+To remove them, run:
+
+```shell
+kubectl delete -f k8s-specifications/
+```
 
 ## Architecture
 

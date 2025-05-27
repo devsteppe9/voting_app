@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: vote-db
+  name: vote-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vote-db
+  template:
+    metadata:
+      labels:
+        app: vote-db
+    spec:
+      containers:
+      - image: postgres:17-alpine
+        name: postgres
+        env:
+        - name: POSTGRES_USER
+          value: postgres
+        - name: POSTGRES_PASSWORD
+          value: postgres
+        - name: POSTGRES_DB
+          value: cs544
+        readinessProbe:
+          exec:
+            command: ["pg_isready", "-U", "postgres"]
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 5
+        ports:
+        - containerPort: 5432
+          name: postgres
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data
+          name: vote-db-data
+      volumes:
+      - name: vote-db-data
+        emptyDir: {} 

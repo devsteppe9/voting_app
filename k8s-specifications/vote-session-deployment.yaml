@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: vote-session
+  name: vote-session
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vote-session
+  template:
+    metadata:
+      labels:
+        app: vote-session
+    spec:
+      containers:
+      - name: vote-session
+        image: dedaced/voting_app-vote-session:latest
+        env:
+        - name: VOTE_DB_URL
+          value: "jdbc:postgresql://vote-db:5432/cs544"
+        ports:
+        - containerPort: 8080
+        readinessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 15
+          timeoutSeconds: 5
+          failureThreshold: 3

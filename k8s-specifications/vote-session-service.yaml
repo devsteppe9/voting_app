@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: vote-session
+  name: vote-session
+spec:
+  selector:
+    app: vote-session
+  ports:
+    - protocol: TCP
+      port: 8082
+      targetPort: 8080
+  type: ClusterIP

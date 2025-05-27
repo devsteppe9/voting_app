@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: vote
+  name: vote
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vote
+  template:
+    metadata:
+      labels:
+        app: vote
+    spec:
+      containers:
+      - name: vote
+        image: dedaced/voting_app-vote:latest
+        env:
+          - name: KAFKA_BOOTSTRAP_SERVERS
+            value: kafka:9092
+          - name: SESSION_API_URL
+            value: http://vote-session:8082/sessions
+        ports:
+        - containerPort: 8080
+          name: vote

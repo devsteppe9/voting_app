@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: result
+  name: result
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: result
+  template:
+    metadata:
+      labels:
+        app: result
+    spec:
+      containers:
+      - name: result
+        image: dedaced/voting_app-result:latest
+        env:
+          - name: VOTE_DB_URL
+            value: postgres://postgres:postgres@vote-db/cs544
+        ports:
+        - containerPort: 80
+          name: result
