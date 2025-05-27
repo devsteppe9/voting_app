@@ -19,7 +19,7 @@ spec:
         image: dedaced/voting_app-result:latest
         env:
           - name: VOTE_DB_URL
-            value: jdbc:postgresql://vote-db:5432/cs544
+            value: postgres://postgres:postgres@vote-db/cs544
         ports:
         - containerPort: 80
           name: result

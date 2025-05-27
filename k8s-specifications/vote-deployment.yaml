@@ -21,7 +21,7 @@ spec:
           - name: KAFKA_BOOTSTRAP_SERVERS
             value: kafka:9092
           - name: SESSION_API_URL
-            value: http://vote-session:8080/sessions
+            value: http://vote-session:8082/sessions
         ports:
         - containerPort: 8080
           name: vote
