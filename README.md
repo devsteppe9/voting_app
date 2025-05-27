@@ -24,7 +24,7 @@ Run in this directory to build and run the app:
 docker compose up
 ```
 
-The `vote` app will be running at [http://localhost:8080](http://localhost:8080), and the `results` will be at [http://localhost:8081/results/{session_id}](http://localhost:8081/results/1). {session_id} is the ID of the voting session you want to see results for.
+The `vote` app will be running at [http://localhost:8080](http://localhost:8080), and the `results` will be at [http://localhost:8081/results/{session_id}](http://localhost:8081/results/1). Replace `{session_id}` in the URL with the ID of the voting session you want to see results for (e.g., `http://localhost:8081/results/1` for session ID 1).
 
 ## Run the app in Kubernetes
 
