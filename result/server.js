@@ -20,9 +20,7 @@ io.on('connection', function (socket) {
   });
 });
 
-var pool = new Client({
-  connectionString: process.env.VOTE_DB_URL || 'postgres://postgres:postgres@localhost:5432/cs544',
-});
+var connectionString = process.env.VOTE_DB_URL || 'postgres://postgres:postgres@localhost:5432/cs544';
 
 let dbClient = null;
 const voteTimeouts = {}; // Add this at the top-level
@@ -30,7 +28,7 @@ const voteTimeouts = {}; // Add this at the top-level
 async.retry(
   { times: 1000, interval: 1000 },
   function (callback) {
-    pool.connect(function (err, client, done) {
+    new Client({ connectionString: connectionString, }).connect(function (err, client, done) {
       if (err) {
         console.error("Waiting for db", err);
       }
