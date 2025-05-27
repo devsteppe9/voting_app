@@ -32,7 +32,10 @@ jobs:
         run: echo "${{ env.DOCKERHUB_TOKEN }}" | docker login -u "${{ env.DOCKERHUB_USERNAME }}" --password-stdin
       
       - name: Build image
-        run: docker-compose -f docker-compose.yml build result
+        uses: hoverkraft-tech/compose-action@v2.2.0
+        with:
+          compose-file: docker-compose.yml
+          services: "result"
       
       - name: Tag and push image to Docker Hub
         run: |
@@ -52,6 +55,7 @@ jobs:
           git add k8s-specifications/result-deployment.yaml
           git commit -m "Update result deployment image to ${{ env.DOCKERHUB_USERNAME }}/voting_app-result:${{ github.sha }}"
           git push origin feat-actions
+
       - name: Clean up
         run: |
           docker rmi ${{ env.DOCKERHUB_USERNAME }}/voting_app-result:${{ github.sha }} || true
