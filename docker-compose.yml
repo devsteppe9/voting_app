@@ -25,11 +25,9 @@ services:
       - back-tier
 
   result:
+    platform: "linux/arm64"
     build:
       context: ./result
-      platforms:
-        - "linux/amd64"
-        - "linux/arm64"
     environment:
       VOTE_DB_URL: "postgres://postgres:postgres@vote-db/cs544"
     # use nodemon rather than node for local dev
