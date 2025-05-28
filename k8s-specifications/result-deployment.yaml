@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: result
-        image: dedaced/voting_app-result:e20eec2694be5434285bd5656abb835f895ac2c8
+        image: dedaced/voting_app-result:0678083062067ee78db827fb5eae2d0123f15528
         env:
           - name: VOTE_DB_URL
             value: postgres://postgres:postgres@vote-db/cs544
