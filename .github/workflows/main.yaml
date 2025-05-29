@@ -17,7 +17,6 @@ permissions:
 jobs:
   build-result-app:
     runs-on: ubuntu-latest
-    # runs-on: macos-latest
 
     steps:
       - name: Checkout code
@@ -66,9 +65,3 @@ jobs:
           git add k8s-specifications/result-deployment.yaml
           git commit -m "Update result deployment image to ${{ env.DOCKERHUB_USERNAME }}/voting_app-result:${{ github.sha }}"
           git push origin feat-actions
-
-      - name: Clean up
-        run: |
-          docker rmi ${{ env.DOCKERHUB_USERNAME }}/voting_app-result:${{ github.sha }} || true
-          docker rmi voting_app-result || true
-          docker system prune -f --volumes || true
