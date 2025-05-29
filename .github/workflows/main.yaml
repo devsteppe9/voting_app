@@ -28,22 +28,30 @@ jobs:
             .github/workflows
             docker-compose.yml
             k8s-specifications/result-deployment.yaml
-
-
-      # Better to login first and fail early if credentials are wrong
-      - name: Log in to DockerHub
-        run: echo "${{ env.DOCKERHUB_TOKEN }}" | docker login -u "${{ env.DOCKERHUB_USERNAME }}" --password-stdin
       
-      - name: Build image
-        uses: hoverkraft-tech/compose-action@v2.2.0
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
         with:
-          compose-file: docker-compose.yml
-          services: "result"
-      
-      - name: Tag and push image to Docker Hub
-        run: |
-          docker tag voting_app-result ${{ env.DOCKERHUB_USERNAME }}/voting_app-result:${{ github.sha }}
-          docker push ${{ env.DOCKERHUB_USERNAME }}/voting_app-result:${{ github.sha }}
+          username: ${{ env.DOCKERHUB_USERNAME }}
+          password: ${{ env.DOCKERHUB_TOKEN }}
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: ./result
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ${{ env.DOCKERHUB_USERNAME }}/voting_app-result:${{ github.sha }}
+            ${{ env.DOCKERHUB_USERNAME }}/voting_app-result:latest
+          build-args: |
+            VOTE_DB_URL=postgres://postgres:postgres@vote-db/cs544
 
       - name: Update Kubernetes deployment
         # Replace image tag in deployment.yaml with new Docker image tagged by commit SHA

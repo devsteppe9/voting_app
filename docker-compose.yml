@@ -25,7 +25,6 @@ services:
       - back-tier
 
   result:
-    platform: "linux/arm64"
     build:
       context: ./result
     environment:
