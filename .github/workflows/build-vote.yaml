@@ -1,0 +1,63 @@
+name: Build images and push to registry
+
+on:
+  push:
+    branches:
+      - feat-actions
+    paths:
+      - 'vote/**'
+
+env:
+  DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+  DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+
+permissions:
+  contents: write
+
+jobs:
+  build-vote-app:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ env.DOCKERHUB_USERNAME }}
+          password: ${{ env.DOCKERHUB_TOKEN }}
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./vote
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ${{ env.DOCKERHUB_USERNAME }}/voting_app-vote:${{ github.sha }}
+            ${{ env.DOCKERHUB_USERNAME }}/voting_app-vote:latest
+          build-args: |
+            VOTE_DB_URL=postgres://postgres:postgres@vote-db/cs544
+
+      - name: Update Kubernetes deployment
+        # Replace image tag in deployment.yaml with new Docker image tagged by commit SHA
+        run: |
+          sed -i "s|image: ${{ env.DOCKERHUB_USERNAME }}/voting_app-vote:.*|image: ${{ env.DOCKERHUB_USERNAME }}/voting_app-vote:${{ github.sha }}|g" k8s-specifications/vote-deployment.yaml
+          echo "Updated image in k8s-specifications/vote-deployment.yaml"
+      
+      - name: Commit and push changes
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add k8s-specifications/vote-deployment.yaml
+          git commit -m "Update vote deployment image to ${{ env.DOCKERHUB_USERNAME }}/voting_app-vote:${{ github.sha }}"
+          git pull origin feat-actions --rebase || true
+          git push origin feat-actions
+  

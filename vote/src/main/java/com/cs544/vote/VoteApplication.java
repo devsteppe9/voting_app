@@ -11,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 public class VoteApplication {
 
 	public static void main(String[] args) {
+		System.out.println("Hello world!");
 		SpringApplication.run(VoteApplication.class, args);
 	}
 
