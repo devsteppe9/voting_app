@@ -9,7 +9,6 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 public class VoteSessionApplication {
 
 	public static void main(String[] args) {
-		System.out.println("Hello from vote-session!");
 		SpringApplication.run(VoteSessionApplication.class, args);
 	}
 

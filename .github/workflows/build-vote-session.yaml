@@ -1,4 +1,4 @@
-name: Integrate vote-sesion app
+name: Integrate vote-session app
 
 on:
   push:
