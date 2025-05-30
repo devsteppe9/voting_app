@@ -25,7 +25,8 @@ services:
       - back-tier
 
   result:
-    build: ./result
+    build:
+      context: ./result
     environment:
       VOTE_DB_URL: "postgres://postgres:postgres@vote-db/cs544"
     # use nodemon rather than node for local dev

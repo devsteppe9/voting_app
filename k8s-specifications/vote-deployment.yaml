@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: vote
-        image: dedaced/voting_app-vote:latest
+        image: dedaced/voting_app-vote:084b0a2b1349973260c84d5fc5fd685be1d1754a
         env:
           - name: KAFKA_BOOTSTRAP_SERVERS
             value: kafka:9092
@@ -25,3 +25,10 @@ spec:
         ports:
         - containerPort: 8080
           name: vote
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 15
+          
