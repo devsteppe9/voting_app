@@ -44,7 +44,8 @@ jobs:
             ${{ env.DOCKERHUB_USERNAME }}/voting_app-vote:${{ github.sha }}
             ${{ env.DOCKERHUB_USERNAME }}/voting_app-vote:latest
           build-args: |
-            VOTE_DB_URL=postgres://postgres:postgres@vote-db/cs544
+            KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+            SESSION_API_URL=http://vote-session:8080/sessions
 
       - name: Update Kubernetes deployment
         # Replace image tag in deployment.yaml with new Docker image tagged by commit SHA
