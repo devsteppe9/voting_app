@@ -12,6 +12,7 @@ import org.springframework.kafka.config.TopicBuilder;
 public class WorkerApplication {
 
 	public static void main(String[] args) {
+		System.out.println("Hello from worker!");
 		SpringApplication.run(WorkerApplication.class, args);
 	}
 
