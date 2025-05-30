@@ -108,6 +108,7 @@ app.get('/results/:sessionId', function (req, res) {
 });
 
 app.get('/api/session/:sessionId', async (req, res) => {
+  console.log("Fetching session data for:", req.params.sessionId);
   const sessionId = req.params.sessionId;
   if (!dbClient) {
     return res.status(503).json({ error: 'Database not connected' });
