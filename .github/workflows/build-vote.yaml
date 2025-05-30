@@ -1,4 +1,4 @@
-name: Build images and push to registry
+name: Integrate vote app
 
 on:
   push:
