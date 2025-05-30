@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: vote-session
-        image: dedaced/voting_app-vote-session:latest
+        image: dedaced/voting_app-vote-session:d09979e4314b4bcdbf8987e52f34684d43abe085
         env:
         - name: VOTE_DB_URL
           value: "jdbc:postgresql://vote-db:5432/cs544"
@@ -30,3 +30,12 @@ spec:
           periodSeconds: 15
           timeoutSeconds: 5
           failureThreshold: 3
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 15
+          timeoutSeconds: 5
+          failureThreshold: 3
+          
