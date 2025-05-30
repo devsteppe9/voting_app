@@ -3,7 +3,7 @@ name: Integrate vote-session app
 on:
   push:
     branches:
-      - feat-actions
+      - main
     paths:
       - 'vote-session/**'
 

@@ -3,7 +3,7 @@ name: Integrate worker app
 on:
   push:
     branches:
-      - feat-actions
+      - main
     paths:
       - 'worker/**'
 

@@ -3,7 +3,7 @@ name: Integrate result app
 on:
   push:
     branches:
-      - feat-actions
+      - main
     paths:
       - 'result/**'
 
