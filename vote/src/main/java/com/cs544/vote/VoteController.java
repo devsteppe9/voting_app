@@ -82,7 +82,8 @@ public class VoteController {
             @RequestParam(value = "vote") String vote,
             @RequestParam(value = "sessionId") Long sessionId,
             RedirectAttributes attr) {
-        Cookie voterCookie = WebUtils.getCookie(req, "voter_id");
+        // Cookie voterCookie = WebUtils.getCookie(req, "voter_id");
+        Cookie voterCookie = null;
         // TODO: remove this later, only for simulation
         String voterId;
         if (voterCookie == null) {
