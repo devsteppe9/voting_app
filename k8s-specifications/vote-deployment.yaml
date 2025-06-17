@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: vote
-        image: dedaced/voting_app-vote:715520718d9ff2145d3137f7618f4c1b8f724ed7
+        image: dedaced/voting_app-vote:1d494bf0cd9c404d8a083e2947b50f81fa1a20fd
         env:
           - name: KAFKA_BOOTSTRAP_SERVERS
             value: kafka:9092
