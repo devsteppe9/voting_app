@@ -12,6 +12,7 @@ public class VoteApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(VoteApplication.class, args);
+		System.out.println("Just to test new deployment");
 	}
 
 	@Bean
